@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+from import_export.formats.base_formats import CSV
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,6 +33,9 @@ INTERNAL_IPS = [
     '127.0.0.1',
     ]
 
+IMPORT_FORMATS = [CSV]
+EXPORT_FORMATS = [CSV]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +46,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'workers',
     'workplaces',
+    'django_extensions',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -81,9 +86,9 @@ WSGI_APPLICATION = 'inkflows.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
 
