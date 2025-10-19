@@ -14,6 +14,22 @@ class Worker(models.Model):
         verbose_name_plural = ('Работники')
     def __str__(self):
        return self.name
+class Images(models.Model):
+    image = models.ImageField(upload_to='images/', blank=True)
+    order = models.PositiveIntegerField(default=0, blank=True, null=True)
+    worker = models.ForeignKey(Worker, on_delete=models.CASCADE, related_name='images', null=True, blank=True)
+    class Meta:
+        ordering = ['order',]
+        verbose_name = 'Изображение сотрудника'
+        verbose_name_plural = ('Изображения сотрудника')
+
+    def save(self, *args, **kwargs):
+        if not self.order:
+            last_order = Images.objects.filter(employee=self.worker).order_by('-order').first()
+            self.order = last_order.order + 1 if last_order else 1
+        super().save(*args, **kwargs)
+    def __str__(self):
+        return f"Изображение для {self.worker.name} (Порядок: {self.order})"
 
 
 # Create your models here.

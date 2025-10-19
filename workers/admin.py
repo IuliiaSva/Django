@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-from .models import Worker
+from .models import Worker, Images
 
 
 #class WorkerResource(resources.ModelResource):
@@ -9,7 +9,9 @@ from .models import Worker
 #        return row['delete']=='1'
 #    class Meta:
 #        model = Worker
-
+class ImageInline(admin.TabularInline): # Или admin.StackedInline
+    model = Images
+    extra = 1
 
 @admin.register(Worker)
 class WorkerAdmin(admin.ModelAdmin):
@@ -18,6 +20,7 @@ class WorkerAdmin(admin.ModelAdmin):
     search_fields = ('gender','name', 'skills', 'grade', 'discription', 'workplace')
     list_filter = ('gender','grade',)
     list_display_links: tuple= ('name',)
+    inlines = [ImageInline]
 #class WorkerAdmin(admin.ModelAdmin):
  #    resource_class = WorkerResource
 

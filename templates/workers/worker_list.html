@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block base %}
+{% block main %}
+<b>Главная страница </b>
+<p>Описание проекта </p>
+{% endblock main%}
+<p> Список сотрудников </p>
+{% for worker in object_list %}
+<li>
+<a href="{% url 'workers:worker_detail' worker.id%}">
+{% include 'include/worker_card.html' %}</a>
+</li>
+   {% endfor %}
+{% endblock base%}
