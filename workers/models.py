@@ -25,7 +25,7 @@ class Images(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order:
-            last_order = Images.objects.filter(employee=self.worker).order_by('-order').first()
+            last_order = Images.objects.filter(worker=self.worker).order_by('-order').first()
             self.order = last_order.order + 1 if last_order else 1
         super().save(*args, **kwargs)
     def __str__(self):
