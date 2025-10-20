@@ -7,19 +7,34 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Worker',
+            name="Worker",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('gender', models.CharField(max_length=100, verbose_name='пол')),
-                ('name', models.CharField(max_length=100, verbose_name='ФИО')),
-                ('skills', models.CharField(max_length=100, verbose_name='Навыки')),
-                ('grade', models.CharField(max_length=10, verbose_name='Уровень освоения навыка')),
-                ('discription', models.CharField(max_length=100, verbose_name='Описание')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("gender", models.CharField(max_length=100, verbose_name="пол")),
+                ("name", models.CharField(max_length=100, verbose_name="ФИО")),
+                ("skills", models.CharField(max_length=100, verbose_name="Навыки")),
+                (
+                    "grade",
+                    models.CharField(
+                        max_length=10, verbose_name="Уровень освоения навыка"
+                    ),
+                ),
+                (
+                    "discription",
+                    models.CharField(max_length=100, verbose_name="Описание"),
+                ),
             ],
         ),
     ]
