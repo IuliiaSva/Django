@@ -5,6 +5,7 @@
 <p>Описание проекта </p>
 {% endblock main%}
 <p> Список сотрудников </p>
+<p> Общее количество сотрудников: {{worker_count}}</p>
 {% for worker in object_list %}
 <li>
 <a href="{% url 'workers:worker_detail' worker.id%}">

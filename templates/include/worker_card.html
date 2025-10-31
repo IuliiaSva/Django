@@ -1,1 +1,4 @@
-Карточка сотрудника: {{ worker.skills}} {{worker.name}}
+{% load static %}
+Карточка сотрудника:
+<img src="{{worker.images.all.0.image.url}}" alt="Нет изображения" width="150"> {{worker.skills}}
+{{worker.name}} {{worker.get_days_worked}}

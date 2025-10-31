@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Workplaces(models.Model):
-    number = models.CharField("Номер", max_length=100)
+    number = models.IntegerField("Номер", unique=True)
     other = models.CharField("Дополнительная информация", max_length=100)
 
     class Meta:
@@ -10,4 +10,4 @@ class Workplaces(models.Model):
         verbose_name_plural = "Рабочие места"
 
     def __str__(self):
-        return self.number
+        return f'Рабочее место №{self.number}'

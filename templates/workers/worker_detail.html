@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block base %}
 <p> <b> Подробная карточка сотрудника </b> </p>
-{{ object.name }} {{object.gender}} {{object.skills}} {{object.grade}}
+<p> <img src="{{worker.images.all.0.image.url}}" alt="Нет изображения" width="150"> </p>
+{{object.name}}, {{object.gender}}, {{object.skills}}, уровень навыка {{object.grade}},
+стаж {{object.get_days_worked}} дней стол {{object.workplace}}
+{% for image in object.images.all|slice:"1:" %}
+        <img src="{{image.image.url}}" alt="Фото работника" width="150">
+    {% endfor %}
 {% endblock %}

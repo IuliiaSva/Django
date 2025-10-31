@@ -1,10 +1,15 @@
+from django.utils import timezone
+
+from cfgv import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
 from workplaces.models import Workplaces
 
 
 class Worker(models.Model):
+
+    date_of_joining = models.DateField("Дата приема", null=True,
+      blank=True,)
     gender = models.CharField("пол", max_length=100)
     name = models.CharField("ФИО", max_length=100)
     skills = models.CharField("Навыки", max_length=100)
@@ -21,6 +26,33 @@ class Worker(models.Model):
         blank=True,
     )
 
+    def clean(self):
+        if self.workplace:
+            adjacent_workplaces = Workplaces.objects.filter(
+                number__in=[self.workplace.number - 1,
+                            self.workplace.number + 1]
+            )
+            for adjacent_place in adjacent_workplaces:
+                neighboring_workers = Worker.objects.filter(workplace=adjacent_place)
+                for worker in neighboring_workers:
+                    if (self.skills == 'бекендер' and
+                        worker.skills == 'тестировщик') or \
+                        (self.skills == 'тестировщик' and
+                         worker.skills == 'бекендер') or \
+                         (self.skills == 'фронтендер' and
+                          worker.skills == 'тестировщик') or \
+                          (self.skills == 'тестировщик' and
+                           worker.skills == 'фронтендер'):
+                        raise ValidationError(
+                            'Разработчик и тестировщик не могут сидеть рядом.'
+                        )
+
+    def get_days_worked(self):
+        if self.date_of_joining:
+            today = timezone.now().date()
+            return (today - self.date_of_joining).days
+        return 0
+
     class Meta:
         verbose_name = "работник"
         verbose_name_plural = "Работники"
@@ -30,6 +62,7 @@ class Worker(models.Model):
 
 
 class Images(models.Model):
+
     image = models.ImageField(upload_to="images/", blank=True)
     order = models.PositiveIntegerField(default=0, blank=True, null=True)
     worker = models.ForeignKey(

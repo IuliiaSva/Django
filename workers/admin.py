@@ -10,7 +10,7 @@ class ImageInline(admin.TabularInline):
 
 @admin.register(Worker)
 class WorkerAdmin(admin.ModelAdmin):
-    list_display = ("gender", "name", "skills",
+    list_display = ("name", "date_of_joining", "gender", "skills",
                     "grade", "description", "workplace")
     list_editable = ("skills", "grade", "description", "workplace")
     search_fields = ("gender", "name", "skills",
@@ -19,5 +19,5 @@ class WorkerAdmin(admin.ModelAdmin):
         "gender",
         "grade",
     )
-    list_display_links: tuple = ("name",)
-    inlines = [ImageInline]
+    list_display_links: ()
+    inlines = (ImageInline, )
