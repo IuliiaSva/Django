@@ -9,15 +9,27 @@ class WorkerListView1(ListView):
     template_name = "workers/workers_list.html"
     context_object_name = "workers"
 
+    def get_queryset(self):
+        return (Worker.objects
+                .select_related('workplace')
+                .prefetch_related('images')
+                .all())
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['worker_count'] = Worker.objects.count()
-        context['object_list'] = Worker.objects.order_by('-date_of_joining')[:4]
+        context['object_list'] = (Worker.objects
+                              .select_related('workplace')
+                              .prefetch_related('images')
+                              .order_by('-date_of_joining')[:4])
         return context
-
 
 class WorkerDetailView(LoginRequiredMixin, DetailView):
     model = Worker
+
+    def get_queryset(self):
+        return (Worker.objects.select_related('workplace')
+                .prefetch_related('images').all())
 
 
 class WorkerListView2(ListView):
@@ -25,3 +37,7 @@ class WorkerListView2(ListView):
     model = Worker
     template_name = "workers/workers_list2.html"
     paginate_by = 10
+
+    def get_queryset(self):
+        return (Worker.objects.select_related('workplace')
+                .prefetch_related('images').all())

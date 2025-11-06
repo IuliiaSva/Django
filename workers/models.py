@@ -1,15 +1,20 @@
 from django.utils import timezone
-
-from cfgv import ValidationError
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from workplaces.models import Workplaces
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+import os
 
 
 class Worker(models.Model):
 
-    date_of_joining = models.DateField("Дата приема", null=True,
-      blank=True,)
+    date_of_joining = models.DateField(
+    "Дата приема",
+    null=True,
+    blank=True,
+    )
     gender = models.CharField("пол", max_length=100)
     name = models.CharField("ФИО", max_length=100)
     skills = models.CharField("Навыки", max_length=100)
@@ -88,3 +93,9 @@ class Images(models.Model):
 
     def __str__(self):
         return f"Изображение для {self.worker.name} (Порядок: {self.order})"
+
+@receiver(post_delete, sender=Images)
+def delete_image_file(sender, instance, **kwargs):
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+          os.remove(instance.image.path)

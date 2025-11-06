@@ -19,5 +19,5 @@ class WorkerAdmin(admin.ModelAdmin):
         "gender",
         "grade",
     )
-    list_display_links: ()
+    list_display_links = ('name',)
     inlines = (ImageInline, )

@@ -1,0 +1,21 @@
+# Database
+*.sqlite3
+db.sqlite3
+mydatabase
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+# Virtual environment
+venv/
+env/
+# Django
+*.log
+/media/
+/static/
+# IDE
+.idea/
+.vscode/
+.DS_Store
+
+
