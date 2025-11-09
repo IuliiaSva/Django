@@ -1,10 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView
-from rest_framework import status, viewsets, mixins
+from rest_framework import status, viewsets, mixins, permissions
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from .models import Worker
-from .serializers import WorkerSerializer
+from workplaces.models import Workplaces
+from .serializers import WorkerSerializer, WorkplacesSerializer
 from rest_framework.response import Response
+from django_filters import rest_framework as filters
 
 class WorkerListView1(ListView):
     model = Worker
@@ -43,7 +46,23 @@ class WorkerListView2(ListView):
     def get_queryset(self):
         return (Worker.objects.select_related('workplace')
                 .prefetch_related('images').all())
+class WorkerFilter (filters.FilterSet):
+    class Meta:
+        model = Worker
+        fields = {
+            'grade': ['gte'],  # >=
+            'skills': ['exact'],
+        }
+
 
 class WorkerViewSet(viewsets.ModelViewSet):
     queryset = Worker.objects.all()
     serializer_class = WorkerSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = WorkerFilter
+    permission_classes = (AllowAny,)
+
+
+class WorkplacesViewSet(viewsets.ModelViewSet):
+    queryset = Workplaces.objects.all()
+    serializer_class = WorkplacesSerializer
