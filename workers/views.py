@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView
-
+from rest_framework import status, viewsets, mixins
+from rest_framework.views import APIView
 from .models import Worker
-
+from .serializers import WorkerSerializer
+from rest_framework.response import Response
 
 class WorkerListView1(ListView):
     model = Worker
@@ -41,3 +43,7 @@ class WorkerListView2(ListView):
     def get_queryset(self):
         return (Worker.objects.select_related('workplace')
                 .prefetch_related('images').all())
+
+class WorkerViewSet(viewsets.ModelViewSet):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSerializer
