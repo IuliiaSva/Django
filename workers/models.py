@@ -6,6 +6,7 @@ from workplaces.models import Workplaces
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 import os
+from django.contrib.auth.models import User
 
 
 class Worker(models.Model):
@@ -99,3 +100,15 @@ def delete_image_file(sender, instance, **kwargs):
     if instance.image:
         if os.path.isfile(instance.image.path):
           os.remove(instance.image.path)
+
+class UserProfile(models.Model):
+    USER_ROLES = [
+        ('visitor', 'Посетитель'),
+        ('Observer', 'Смотритель'),
+        ('Admin', 'Администратор'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=USER_ROLES, default='visitor')
+
+    def __str__(self):
+        return f"{self.user.username} ({self.get_role_display()})"
