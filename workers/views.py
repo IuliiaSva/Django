@@ -48,20 +48,11 @@ class WorkerListView2(ListView):
     def get_queryset(self):
         return (Worker.objects.select_related('workplace')
                 .prefetch_related('images').all())
-class WorkerFilter (filters.FilterSet):
-    class Meta:
-        model = Worker
-        fields = {
-            'grade': ['gte'],  # >=
-            'skills': ['exact'],
-        }
 
 
 class WorkerViewSet(viewsets.ModelViewSet):
     queryset = Worker.objects.all()
     serializer_class = WorkerSerializer
-    filter_backends = [filters.DjangoFilterBackend]
-    filterset_class = WorkerFilter
     permission_classes = [WorkerPermissions]
 
     @action(detail=True, methods=['patch'], name='Move Worker')

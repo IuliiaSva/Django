@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-)p!22zu1+*fo0m^!(cm&l(6x=_xtepc1h8u)(2vzb00vbdj)*1"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 INTERNAL_IPS = [
@@ -51,8 +51,10 @@ INSTALLED_APPS = [
     "django_cleanup.apps.CleanupConfig",
     "rest_framework.authtoken",
     "rest_framework",
+    'drf_spectacular',
     "djoser",
-    "debug_toolbar",
+    'debug_toolbar',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -71,6 +73,13 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Мой API',
+    'DESCRIPTION': 'Описание моего API',
+    'VERSION': '1.0.0',
+}
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -80,6 +89,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "inkflows.urls"
